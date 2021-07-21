@@ -1,18 +1,18 @@
 # 7.3: Integração com hardware wallets
 
-> :information_source: **NOTA:** Esta seção foi adicionada recentemente ao curso e é um rascunho inicial que ainda pode estar aguardando revisão. Leitor de advertência.
+> :information_source: **NOTA:** Esta seção foi adicionada recentemente ao curso e é um rascunho inicial que ainda pode estar aguardando revisão. Leitor, cuidado.
 
-Uma das principais vantagens dos PSBTs é a capacidade de transferir transações para hardware wallets. Esta será uma ótima ferramenta de desenvolvimento para nós continuarmos a programar usando o Bitcoin. No entanto, não podemos testá-la agora se estivermos usando uma das configurações que sugerimos para este curso, uma VM no Linode de acordo com a seção [§2.1](https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line/blob/master/02_1_Setting_Up_a_Bitcoin-Core_VPS_with_StackScript.md) ou uma opção mais expansiva ainda como um AWS de acordo com a seção [§2.2](https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line/blob/master/02_2_Setting_Up_Bitcoin_Core_Other.md), isso porque obviamente não teremos como conectar uma hardware wallet à nossa máquina virtual remota.
+Uma das principais vantagens das PSBTs é a capacidade de transferir transações para hardware wallets. Esta será uma ótima ferramenta de desenvolvimento para nós continuarmos a programar usando o Bitcoin. No entanto, não podemos testá-la agora se estivermos usando uma das configurações que sugerimos para este curso, uma VM no Linode de acordo com a seção [§2.1](https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line/blob/master/02_1_Setting_Up_a_Bitcoin-Core_VPS_with_StackScript.md) ou uma opção mais expansiva ainda como um AWS de acordo com a seção [§2.2](https://github.com/BlockchainCommons/Learning-Bitcoin-from-the-Command-Line/blob/master/02_2_Setting_Up_Bitcoin_Core_Other.md), isso porque obviamente não teremos como conectar uma hardware wallet à nossa máquina virtual remota.
 
 > :book: ***O que é uma hardware wallet?*** Uma hardware wallet é um dispositivo eletrônico que melhora a segurança da criptomoeda mantendo todas as chaves privadas no dispositivo, ao invés de colocá-las em um computador conectado diretamente a internet. As carteiras de hardware têm protocolos específicos para fornecer interações online, geralmente gerenciadas por um programa que se comunica com o dispositivo por meio de uma porta USB. Neste capítulo, gerenciaremos uma carteira de hardware com o ```bitcoin-cli``` e o programa ```hwy.py```.
 
 Existem três opções de como passar por este capítulo: (1) Ler sem testar o código; (2) Instalar o Bitcoin em uma máquina local para testar todos esses comandos ou; (3) Pular direto para o [Capítulo 8: Expandindo as transações de Bitcoin usando outras maneiras](08_0_Expanding_Bitcoin_Transactions_Other.md). Sugerimos a primeira opção, mas se quisermos colocar a mão na massa, iremos dar o suporte necessário para a segunda opção falando sobre o uso de um Macintosh (uma plataforma hardware que o [Bitcoin Standup](https://github.com/BlockchainCommons/Bitcoin-Standup) dá suporte) para teste.
 
-> :warning: **AVISO DE VERSÃO:** Os PSBTs são uma inovação do Bitcoin Core v0.17.0. As versões anteriores do Bitcoin Core não funcionarão com o PSBT enquanto ele estiver em andamento (embora ainda consigam reconhecer a transação final). A interface HWI apareceu no Bitcoin Core v 0.18.0, mas, desde que estejamos usando nossa configuração sugerida com o Bitcoin Standup, ela deve funcionar.
+> :warning: **AVISO DE VERSÃO:** As PSBTs são uma inovação do Bitcoin Core v0.17.0. As versões anteriores do Bitcoin Core não funcionarão com a PSBT enquanto ele estiver em andamento (embora ainda consigam reconhecer a transação final). A interface HWI apareceu no Bitcoin Core v 0.18.0, mas, desde que estejamos usando nossa configuração sugerida com o Bitcoin Standup, ela deve funcionar.
 
 A metodologia descrita neste capítulo para integração com uma hardware wallet depende do [Bitcoin Hardware Wallet Interface](https://github.com/bitcoin-core/HWI) lançada através do Bitcoin Core e que se baseia na [instalação](https://github.com/bitcoin-core/HWI/blob/master/README.md) e [uso](https://hwi.readthedocs.io) das instruções contidas nele.
 
-> :warning: **AVISO DE NOVIDADE:** A interface HWI é muito nova e precisa de alguns ajustes ainda, mesmo depois usando a v0.20.0 do Bitcoin Core. Pode ser difícil instalá-la corretamente e pode conter erros não intuitivos. O que se segue é uma descrição de uma configuração de trabalho, mas foram necessárias várias tentativas para ter sucesso e sua configuração pode variar.
+> :warning: **AVISO DE NOVIDADE:** A interface HWI é muito nova e precisa de alguns ajustes ainda, mesmo depois da versão v0.20.0 do Bitcoin Core. Pode ser difícil instalá-la corretamente e pode conter erros não intuitivos. O que se segue é uma descrição de uma configuração de trabalho, mas foram necessárias várias tentativas para ter sucesso e sua configuração pode variar.
 
 ## Instalando o Bitcoin Core em uma máquina local
 
@@ -26,7 +26,7 @@ Se tivermos uma máquina Linux local, podemos instalar o [Bitcoin Standup Linux 
 
 Depois de colocar o Bitcoin Standup em execução em nossa máquina local, vamos desejar sincronizar o blockchain "Testnet", assumindo que já estamos seguindo o método padrão deste curso.
 
-Estaremos usando um Macintosh e um Testnet para os exemplos desta seção.
+Usaremos um Macintosh e um Testnet para os exemplos desta seção.
 
 ### Criando um alias para o Bitcoin-CLI
 
@@ -90,13 +90,13 @@ Iremos querer criar um alias aqui também, variando de acordo com o local de ins
 ```
 $ alias hwi="~/Standup/HWI/hwi.py --testnet"
 ```
-Novamente, incluímos uma referência a testnet ao alias.
+Novamente, incluímos uma referência a testnet no alias.
 
 ## Preparando nossa Ledger
 
-_Precisamos escolher uma plataforma de hardware wallet para a demonstração de HWI. Nossa escolha foi a Ledger, que há muito tempo é onde fazemos os testes nestes casos. Podemos consultar as [informações de suporte do dispositivo do HWI](https://github.com/bitcoin-core/HWI/blob/master/README.md#device-support) para obter uma lista de outros dispositivos compatíveis. Se usarmos um dispositivo diferente de uma Ledger, precisaremos avaliar as nossas soluções para prepará-la para uso na Testnet, mas caso contrário, devemos  ser capazes de continuar com o curso conforme escrito aqui._
+_Precisamos escolher uma plataforma de hardware wallet para a demonstração de HWI. Nossa escolha foi a Ledger, que há muito tempo é onde fazemos os testes nestes casos. Podemos consultar as [informações de suporte do dispositivo do HWI](https://github.com/bitcoin-core/HWI/blob/master/README.md#device-support) para obter uma lista de outros dispositivos compatíveis. Se usarmos um dispositivo diferente de uma Ledger, precisaremos avaliar as nossas soluções para prepará-la para uso na Testnet, mas caso contrário, devemos ser capazes de continuar com o curso conforme escrito aqui._
 
-Se estiver trabalhando com Bitcoins usando a Ledger, provavelmente precisaremos fazer nada. (Mas não sugerimos isso neste curso).
+Se estiver trabalhando com Bitcoins usando a Ledger, provavelmente não precisaremos fazer nada. (Mas não sugerimos isso neste curso).
 
 Para trabalhar com moedas usando a Testnet, conforme sugerido aqui, precisaremos fazer algumas atualizações:
 
@@ -104,9 +104,9 @@ Para trabalhar com moedas usando a Testnet, conforme sugerido aqui, precisaremos
 2. Vamos no "Gerenciar" para instalar o "Bitcoin Test". A versão atual requer que tenhamos o "Bitcoin" e o "Ethereum" instalados primeiro;
 3. Vamos no "Gerenciar", para instalar o nosso novo "Bitcoin Test" e "Adicionar uma conta".
 
-## Acoplando na Ledger
+## Conectando a uma Ledger
 
-Para que um Razão esteja acessível, devemos fazer o login com o nosso PIN e, em seguida, acessar o aplicativo que desejamos usar, que no caso é o aplicativo "Bitcoin Test". Pode ser necessário repetir isso algumas vezes quando nossa Ledger ficar em stand-by.
+Para que a Ledger esteja acessível, devemos fazer o login com o nosso PIN e, em seguida, acessar o aplicativo que desejamos usar, que no caso é o aplicativo "Bitcoin Test". Pode ser necessário repetir isso algumas vezes quando nossa Ledger ficar em stand-by.
 
 Depois, podemos solicitar que o HWI acesse a Ledger com o comando `enumerate`:
 ```
@@ -241,11 +241,11 @@ $ bitcoin-cli -rpcwallet=ledger listunspent
   }
 ]
 ```
-## Criando uma transação com o PSBT
+## Criando uma transação com a PSBT
 
-Observar e receber os pagamentos é apenas metade da batalha. Também podemos fazer pagamentos usando contas mantidas em nossa hardware wallet. Este é o quarto exemplo da vida real usando os PSBTs, de acordo com o processo descrito na seção [§7.1: Criando uma Transação Bitcoin Parcialmente Assinada](7_1_Creating_a_Partially_Signed_Bitcoin_Transaction.md).
+Observar e receber os pagamentos é apenas metade da batalha. Também podemos fazer pagamentos usando contas mantidas em nossa hardware wallet. Este é o quarto exemplo da vida real usando as PSBTs, de acordo com o processo descrito na seção [§7.1: Criando uma Transação Bitcoin Parcialmente Assinada](7_1_Creating_a_Partially_Signed_Bitcoin_Transaction.md).
 
-Os comandos funcionam exatamente da mesma forma. Nesse caso, usamos o ```walletcreatefundedpsbt``` para formar nosso PSBT porque estamos em uma situação em que não nos importamos com quais UTXOs são usados:
+Os comandos funcionam exatamente da mesma forma. Nesse caso, usamos o ```walletcreatefundedpsbt``` para formar nossa PSBT porque estamos em uma situação em que não nos importamos com quais UTXOs são usados:
 ```
 $ bitcoin-cli -named -rpcwallet=ledger walletcreatefundedpsbt inputs='''[]''' outputs='''[{"tb1qcaedd724gts3aug73m78c7nfsv9d8zs9q6h2kd":0.015}]'''
 {
@@ -254,7 +254,7 @@ $ bitcoin-cli -named -rpcwallet=ledger walletcreatefundedpsbt inputs='''[]''' ou
   "changepos": 1
 }
 ```
-Podemos observar os PSBT e verificar se ele parece correto:
+Podemos observar as PSBT e verificar se ela parece correta:
 ```
 $ psbt="cHNidP8BAJoCAAAAAri6BLjKQZGO9Y1iVIYbxlxBJ2kqsTPWnxGaH4HrSjxbAAAAAAD+////leV0hwJ0fO40RmhuFVIYtO16ktic2J4vJFLAsT5TM8cBAAAAAP7///8CYOMWAAAAAAAWABTHctb5VULhHvEejvx8emmDCtOKBU+gBwAAAAAAFgAU9Ojd5ds3CJi1fIRWbj92CYhQgX0AAAAAAAEBH0BCDwAAAAAAFgAUABk8i/Je8Fb41FcaHD9lEj5f54giBgMBaNlILisC1wJ/tKie3FStqhrfcJM09kfQobBTOCiuxRiaHVILVAAAgAEAAIAAAACAAAAAADkCAAAAAQEfQEIPAAAAAAAWABQtTxOfqohTBNFWFqFm0tUVdK9KXSIGAqATz5xLX1aJ2SUwNqPkd8+YaJYm94FMlPCScm8Rt0GrGJodUgtUAACAAQAAgAAAAIAAAAAAAAAAAAAAIgID2UK1nupSfXC81nmB65XZ+pYlJp/W6wNk5FLt5ZCSx6kYmh1SC1QAAIABAACAAAAAgAEAAAABAAAAAA=="
 
@@ -373,7 +373,6 @@ $ bitcoin-cli decodepsbt $psbt
   "fee": 0.00000209
 }
 ```
-And as usual, `analyzepsbt` will show how far you've gotten:
 E, como de costume, `analisepsbt` mostrará o quão longe você chegou:
 ```
 $ bitcoin-cli analyzepsbt $psbt
@@ -408,11 +407,11 @@ $ bitcoin-cli analyzepsbt $psbt
 ```
 Como importamos aquele conjunto de chaves, o ```bitcoin-cli``` tem todas as informações de que precisa para preencher as entradas, porém, ele não pode assinar porque as chaves privadas são mantidas na hardware wallet.
 
-É aí que entra o HWI, com o comando ```signtx```. Basta que enviemos junto com o PSBT:
+É aí que entra o HWI, com o comando ```signtx```. Basta que enviemos junto com a PSBT:
 ```
 $ hwi -f 9a1d520b signtx $psbt
 ```
-É provável  que tenhamos de mexer em nossa hardware wallet neste momento. O dispositivo provavelmente pedirá a confirmação das entradas, as saídas e a taxa. Quando terminar, ele deve retornar um novo PSBT.
+É provável que tenhamos de mexer em nossa hardware wallet neste momento. O dispositivo provavelmente pedirá a confirmação das entradas, as saídas e a taxa. Quando terminar, ele deve retornar uma nova PSBT.
 
 ```
 {"psbt": "cHNidP8BAJoCAAAAAri6BLjKQZGO9Y1iVIYbxlxBJ2kqsTPWnxGaH4HrSjxbAAAAAAD+////leV0hwJ0fO40RmhuFVIYtO16ktic2J4vJFLAsT5TM8cBAAAAAP7///8CYOMWAAAAAAAWABTHctb5VULhHvEejvx8emmDCtOKBU+gBwAAAAAAFgAU9Ojd5ds3CJi1fIRWbj92CYhQgX0AAAAAAAEBH0BCDwAAAAAAFgAUABk8i/Je8Fb41FcaHD9lEj5f54giAgMBaNlILisC1wJ/tKie3FStqhrfcJM09kfQobBTOCiuxUcwRAIgAxkQlk2fqEMxvP54WWyiFhlfSul9sd4GzKDhfGpmlewCIHYej3zXWWMgWI6rixxQw9yzGozDaFPqQNNIvcFPk+lfASIGAwFo2UguKwLXAn+0qJ7cVK2qGt9wkzT2R9ChsFM4KK7FGJodUgtUAACAAQAAgAAAAIAAAAAAOQIAAAABAR9AQg8AAAAAABYAFC1PE5+qiFME0VYWoWbS1RV0r0pdIgICoBPPnEtfVonZJTA2o+R3z5holib3gUyU8JJybxG3QatHMEQCIH5t6T2yufUP7glYZ8YH0/PhDFpotSmjgZUhvj6GbCFIAiBcgXzyYl7IjYuaF3pJ7AgW1rLYkjeCJJ2M9pVUrq5vFwEiBgKgE8+cS19WidklMDaj5HfPmGiWJveBTJTwknJvEbdBqxiaHVILVAAAgAEAAIAAAACAAAAAAAAAAAAAACICA9lCtZ7qUn1wvNZ5geuV2fqWJSaf1usDZORS7eWQksepGJodUgtUAACAAQAAgAAAAIABAAAAAQAAAAA="}
