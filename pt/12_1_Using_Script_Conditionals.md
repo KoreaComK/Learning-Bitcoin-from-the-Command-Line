@@ -6,7 +6,7 @@ Há um aspecto importante na criação de Script de Bitcoin que é crucial para 
 
 Já vimos um condicional dentro do script, o ```op_verify``` (0x69). Ele retira o item superior na pilha e verifica se é verdade. Se não for _ele termina a execução do script_.
 
-A verificação é geralmente incorporada em outros opcodes. Já vimos o ```OP_EQUALVERIFY``` (0xad), o ```OP_CHECKLOCKTIMEVERIFY``` (0xb1) e o ```OP_CHECKSEQUENCEVERIFY``` (0xb2). Cada um desses opcodes faz nossa ação central (equal, checklocktime ou checkscence) e então faz uma verificação posteriormente. Os outros opcodes de verificação que ainda não vimos são: ```OP_NUMEQUALVERIFY``` (0x9d), ```OP_CHECKSIGVERIFY``` (0xad), e ```OP_CHECKMULTISIGVERIFY``` (0xaf).
+A verificação é geralmente incorporada em outros opcodes. Já vimos o ```OP_EQUALVERIFY``` (0xad), o ```OP_CHECKLOCKTIMEVERIFY``` (0xb1) e o ```OP_CHECKSEQUENCEVERIFY``` (0xb2). Cada um desses opcodes faz as suas ações centrais (equal, checklocktime ou checkscence) e, em seguida, faz uma verificação. Os outros opcodes de verificação que ainda não vimos são: ```OP_NUMEQUALVERIFY``` (0x9d), ```OP_CHECKSIGVERIFY``` (0xad), e ```OP_CHECKMULTISIGVERIFY``` (0xaf).
 
 Então, como o ```OP_VERIFY``` é um condicional? É o tipo mais poderoso de condicional. Usando o ```OP_VERIFY```, _SE_ uma condição é verdadeira, o script continua executando, _SENÃO_ o script para a execução. É assim que verificamos as condições que são absolutamente necessárias para que um script tenha sucesso. Por exemplo, o script P2PKH (```OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG```) tem duas condições necessárias: (1) a chave pública fornecida precisa corresponder ao hash da chave pública e; (2) a assinatura fornecida precisa corresponder a essa chave pública. Um ```OP_EQUALVERIFY``` é usado para a comparação do hash da chave pública e a chave pública do hash porque é uma condição absolutamente necessária. Não _QUEREMOS_ que o script continue caso venha a falhar.
 
@@ -59,7 +59,7 @@ ENDIF
  OP_EQUALVERIFY 
  OP_CHECKSIG
 ```
-A declaração que avaliará para é ```True``` ou ```False``` é colocada na pilha _antes_ de executar o ```IF```, então o bloco correto do código será executado com base nesse resultado.
+A declaração que avaliará para ```True``` ou ```False``` é colocada na pilha _antes_ de executar o ```IF```, então o bloco correto do código será executado com base nesse resultado.
 
 Este exemplo específico de código é destinado a uma simples multisig 1-de-2. O proprietário da ```<privKeyA>``` colocaria ```<signatureA> <pubKeyA> TRUE``` no script de desbloqueio, enquanto o proprietário da ```<privKeyB>``` colocaria ```<signatureB> <pubKeyB> FALSE``` no script de desbloqueio. Aquele que for rastreado como ```TRUE``` ou ```FALSE``` é o que é verificado pela instrução ```IF```/```ELSE```. Ele conta ao script qual o hash da chave pública é para verificar, então o ```OP_EQUALVERIFY``` e o ```OP_CHECKSIG``` no final fazem o verdadeiro trabalho.
 
@@ -88,7 +88,7 @@ Primeiro, colocamos as constantes na pilha:
 Script: OP_DUP OP_HASH160 <pubKeyHashA> OP_EQUAL IF OP_CHECKSIG ELSE OP_DUP OP_HASH160 <pubKeyHashB> OP_EQUALVERIFY OP_CHECKSIG ENDIF
 Stack: [ <signatureA> <pubKeyA> ]
 ```
-Em seguida, nós executamos os primeiros, comandos óbvios, ```OP_DUP``` e ```OP_HASH160``` e colocamos outra constante:
+Em seguida, nós executamos os primeiros comandos óbvios, ```OP_DUP``` e ```OP_HASH160``` e colocamos outra constante:
 ```
 Script: OP_HASH160 <pubKeyHashA> OP_EQUAL IF OP_CHECKSIG ELSE OP_DUP OP_HASH160 <pubKeyHashB> OP_EQUALVERIFY OP_CHECKSIG ENDIF
 Running: <pubKeyA> OP_DUP
@@ -132,7 +132,7 @@ Primeiro, colocamos as constantes na pilha:
 Script: OP_DUP OP_HASH160 <pubKeyHashA> OP_EQUAL IF OP_CHECKSIG ELSE OP_DUP OP_HASH160 <pubKeyHashB> OP_EQUALVERIFY OP_CHECKSIG ENDIF
 Stack: [ <signatureB> <pubKeyB> ]
 ```
-Em seguida, executamos os primeiros, comandos óbvios, ```OP_DUP``` e ```OP_HASH160``` e adicionamos outra constante:
+Em seguida, executamos os primeiros comandos óbvios, ```OP_DUP``` e ```OP_HASH160``` e adicionamos outra constante:
 ```
 Script: OP_HASH160 <pubKeyHashA> OP_EQUAL IF OP_CHECKSIG ELSE OP_DUP OP_HASH160 <pubKeyHashB> OP_EQUALVERIFY OP_CHECKSIG ENDIF
 Running: <pubKeyB> OP_DUP
@@ -157,7 +157,7 @@ Script: OP_DUP OP_HASH160 <pubKeyHashB> OP_EQUALVERIFY OP_CHECKSIG
 Running: False IF
 Stack: [ <signatureB> <pubKeyB> ]
 ```
-Depois, passamos por todo o imbróglio, começando com outro ```OP_DUP```, mas eventualmente o testando usando outro ```pubKeyHash```:
+Depois, passamos novamente por todo o imbróglio, começando com outro ```OP_DUP```, mas eventualmente o testando usando outro ```pubKeyHash```:
 ```
 Script: OP_HASH160 <pubKeyHashB> OP_EQUALVERIFY OP_CHECKSIG
 Running: <pubKeyB> OP_DUP
@@ -190,7 +190,7 @@ Essas opções são usadas com muito menos frequência do que a construção usa
 
 ## Resumo: Usando condicionais no script
 
-Os condicionais no script do Bitcoin permitem deter o script (usando o ```OP_VERIFY```) ou para escolher diferentes ramos de execução (usando ```OP_IF```). No entanto, a ler o ```OP_IF``` pode ser um pouco complicado. Precisamos lembrar de que é o item adicionado a pilha _antes_ do operador ```OP_IF``` ser executado que controla a sua execução. Esse item normalmente fará parte do script de desbloqueio (ou será um resultado direto de itens do script de desbloqueio).
+Os condicionais no script do Bitcoin permitem suspender o script (usando o ```OP_VERIFY```) ou escolher diferentes ramos de execução (usando ```OP_IF```). No entanto, a leituda do ```OP_IF``` pode ser um pouco complicado. Precisamos lembrar de que é o item adicionado a pilha _antes_ do operador ```OP_IF``` ser executado que controla a sua execução. Esse item normalmente fará parte do script de desbloqueio (ou será um resultado direto de itens do script de desbloqueio).
 
 > :fire: ***Qual é o poder dos condicionais?*** Os condicionais do script são o principal bloco de construção no script do Bitcoin. Eles transformam os scripts simples e estáticos do Bitcoin em scripts de bitcoin complexos e dinâmicos que podem avaliar de maneira diferente com base em diferentes momentos, diferentes circunstâncias ou diferentes entradas de usuário. Em outras palavras, eles são o último pilar dos contratos inteligentes.
 

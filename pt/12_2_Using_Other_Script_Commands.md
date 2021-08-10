@@ -30,17 +30,17 @@ Manipulam dois números logicamente:
 * OP_BOOLAND (0x9a) - 1 se ambos os números não são 0, senão 0;
 * OP_BOOLOR	(0x9B) - 1 se qualquer número não é 0, senão 0.
 
-Testa dois números:
+Testar dois números:
 
 * OP_NUMEQUAL (0x9C) - 1 se ambos os números forem iguais, senão 0;
 * OP_LESSTHAN (0x9f) - 1 se o primeiro número for menor que o segundo, senão 0;
 * OP_GREATERTHAN (0xA0) - 1 se o primeiro número for maior que o segundo, senão 0;
 * OP_LESSTHANOREQUAL (0xA1) - 1 se o primeiro número for menor ou igual ao segundo, senão 0;
-* OP_GREATERTHANOREQUAL (0xA2) - 1 se o primeiro número for maior ou igual a segundo, senão 0.
+* OP_GREATERTHANOREQUAL (0xA2) - 1 se o primeiro número for maior ou igual ao segundo, senão 0.
 
 É legal saber também: O ```OP_NUMEQUALVERIFY``` (0x9d) e o ```OP_NUMNOTEQUAL``` (0x9e)
 
-Testa três números:
+Testar três números:
 
 * OP_WITHIN (0xA5) - 1 se um número estiver no intervalo de dois outros números.
 
@@ -69,7 +69,7 @@ Hash:
 * OP_HASH160	(0xa9)	— SHA-256 + RIPEMD-160;
 * OP_HASH256	(0xaa)	— SHA-256 + SHA-256.
 
-Verifica as assinaturas:
+Verificar as assinaturas:
 
 * Op_checksig (0xac) - Verifica uma assinatura;
 * Op_checkmultisig (0xae) - Verifica uma multisig M-DE-N.
@@ -78,7 +78,7 @@ Verifica as assinaturas:
 
 ## Resumo: Usando outros comandos no script
 
-O script do Bitcoin inclui uma ampla gama de opcodes aritméticos, de pilha e criptográficos. A maioria desses opcodes adicionais provavelmente não serão tão comuns quanto os discutidos nas seções anteriores, mas, no entanto, estão disponíveis, para sabermos que existem caso precisemos utilizá-los para escrever nosso script!
+O script do Bitcoin inclui uma ampla gama de opcodes aritméticos, de pilha e criptográficos. A maioria desses opcodes adicionais provavelmente não serão tão comuns quanto os discutidos nas seções anteriores, mas, no entanto, estão disponíveis, caso precisemos utilizá-los para escrever nosso script!
 
 ## O Que Vem Depois?
 
