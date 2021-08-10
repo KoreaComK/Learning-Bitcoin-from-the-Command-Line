@@ -65,7 +65,7 @@ Este exemplo específico de código é destinado a uma simples multisig 1-de-2. 
 
 ### Executando um If/Then com Multisig
 
-Com uma compreensão central dos condicionais do Bitcoin, estamos prontos para executar scripts utilizando-os. Nós vamos começar, criando uma ligeira variante da multisig 1-de-2 do exemplo, onde nossos usuários não precisam lembrar se eles são ```TRUE``` ou ```FALSE```. Ao invés disso, se necessário, o script verifica os hashes de chave pública, apenas exigindo um único sucesso:
+Com uma compreensão central dos condicionais do Bitcoin, estamos prontos para executar scripts utilizando-os. Nós vamos começar criando  uma ligeira variante da multisig 1-de-2 do exemplo, onde nossos usuários não precisam lembrar se eles são ```TRUE``` ou ```FALSE```. Ao invés disso, se necessário, o script verifica os hashes de chave pública, apenas exigindo um único sucesso:
 ```
 OP_DUP OP_HASH160 <pubKeyHashA> OP_EQUAL
 IF

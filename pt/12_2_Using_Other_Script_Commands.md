@@ -2,7 +2,7 @@
 
 Já temos em mãos a maioria dos opcodes do script do Bitcoin que iremos usar na maioria dos nossos scripts. No entanto, o script do Bitcoin oferece muito mais opções, o que pode vir a ser exatamente o que precisamos para criar o nosso instrumento financeiro dos nossos sonhos.
 
-Devemos consultar a [página do script  do Bitcoin](https://en.bitcoin.it/wiki/script) para termos uma lista mais completa de todos esses e muitos outros comandos. Esta seção destaca apenas os opcodes mais notáveis.
+Devemos consultar a [página do script do Bitcoin](https://en.bitcoin.it/wiki/script) para termos uma lista mais completa de todos esses e muitos outros comandos. Esta seção destaca apenas os opcodes mais notáveis.
 
 ## Entendendo os Opcodes Aritméticos
 
