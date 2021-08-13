@@ -443,8 +443,7 @@ Script: OP_EQUAL OP_NOT OP_VERIFY OP_SHA1 OP_SWAP OP_SHA1 OP_EQUAL
 Running: <numA> <numB> OP_2DUP
 Stack: [ <numA> <numB> <numA> <numB> ]
 ```
-Then, we make sure the two numbers aren't equal, exiting if they are:
-Em seguida, certificamo-nos de que os dois números não são iguais, saindo se forem:
+Em seguida, certificamo-nos de que os dois números não são iguais, excluindo-se caso sejam:
 ```
 Script: OP_NOT OP_VERIFY OP_SHA1 OP_SWAP OP_SHA1 OP_EQUAL
 Running: <numA> <numB> OP_EQUAL
@@ -458,7 +457,6 @@ Script: OP_SHA1 OP_SWAP OP_SHA1 OP_EQUAL
 Running: True OP_VERIFY
 Stack: [ <numA> <numB> ] — Does Not Exit
 ```
-We now create two SHAs:
 Agora criamos dois SHAs:
 ```
 Script: OP_SWAP OP_SHA1 OP_EQUAL
@@ -473,7 +471,6 @@ Script: OP_EQUAL
 Running: <numA> OP_SHA1
 Stack: [ <hashB> <hashA> ]
 ```
-Finally, we see if they match.
 Finalmente, vemos se eles combinam.
 ```
 Script: 

@@ -14,7 +14,7 @@ O truque do Lightning é o fato de ele estar fora da blockchain. Para usar a Lig
 
 Se temos uma massa de transações não publicadas, qualquer uma delas _pode_ ser colocada na Blockchain, portanto, como evitamos que um dos participantes volte a uma transação antiga que é mais benéfica para eles? A resposta é _revogação_. Um exemplo simplificado no BIP 112, que oferece um dos trampolins para o Lightning, mostra o processo. Nós damos ao participante que seria prejudicado pela reversão de uma transação revogada a capacidade de retirar os fundos ele mesmo se o outro participante tentar usar ilegitimamente a transação revogada.
 
-Por exemplo, suponha que Alice e Bob atualizem a transação de compromisso para dar mais fundos a Bob (Ou seja, Alice enviou fundos a Bob por meio da rede Lightning). Eles assinam parcialmente novas transações, mas  cada um também oferece seu próprio ```revokeCode``` para as transações anteriores. Isso efetivamente garante que nenhum deles irão publicar as transações anteriores, porque isso permitiria que a contraparte reivindicasse os fundos anteriores.
+Por exemplo, suponha que Alice e Bob atualizem a transação de compromisso para dar mais fundos a Bob (Ou seja, Alice enviou fundos a Bob por meio da rede Lightning). Eles assinam parcialmente novas transações, mas cada  um também oferece seu próprio ```revokeCode``` para as transações anteriores. Isso efetivamente garante que nenhum deles irão publicar as transações anteriores, porque isso permitiria que a contraparte reivindicasse os fundos anteriores.
 
 Então, como se parece a transação antiga? Foi uma transação de compromisso mostrando fundos destinados a Alice, antes que ela os desse a Bob. Ele tinha um script de bloqueio da seguinte maneira:
 ```
@@ -56,7 +56,7 @@ Script: IF <pubKeyBob> ELSE <+24Hours> OP_CHECKSEQUENCEVERIFY OP_DROP <pubKeyAli
 Running: <revokeHash> <revokeHash> OP_EQUAL
 Stack: [ <sigAlice> True ]
 ```
-O ```OP_EQUAL``` alimenta a instrução ```IF```. Como Alice usa o ```revokeCode```, ela entra no caminho que permite gatar os fundos imediatamente, reduzindo o resto do script para ```<pubKeyBob>``` (dentro da condicional) e com o ```OP_CHECKSIG``` (depois).
+O ```OP_EQUAL``` alimenta a instrução ```IF```. Como Alice usa o ```revokeCode```, ela entra no caminho que permite gastar os fundos imediatamente, reduzindo o resto do script para ```<pubKeyBob>``` (dentro da condicional) e com o ```OP_CHECKSIG``` (depois).
 ```
 Script: <pubKeyBob> OP_CHECKSIG
 Running: True IF
@@ -107,7 +107,7 @@ Script: OP_DROP <pubKeyAlice> OP_CHECKSIG
 Running: <+24Hours> OP_CHECKSEQUENCEVERIFY 
 Stack: [ <sigAlice> <+24Hours> ] — Script EXITS
 ```
-#### Executando o script de bloqueio para a vitima, o Bob
+#### Executando o script de bloqueio para a vítima, o Bob
 
 O que isso significa é que Bob tem 24 horas para recuperar os fundos se Alice tentar trapacear, usando o ```<revokeCode>``` e a assinatura como script de desbloqueio:
 ```
@@ -267,7 +267,7 @@ Se já vimos a funcionalidade complexa do Bitcoin ou os sistemas adjacentes ao B
 
 ## O Que Vem Depois?
 
-Vamos ficar "Usando o Tor" no [Capítulo 14: Usando o Tor](14_0_Using_Tor.md).
+Vamos para "Usando o Tor" no [Capítulo 14: Usando o Tor](14_0_Using_Tor.md).
 
 Ou, se preferir, existem dois caminhos alternativos:
 
